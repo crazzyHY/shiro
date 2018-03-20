@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="cacheManager" class="cn.craz.shiro.wrapper.SpringCacheManagerWrapper">
+        <property name="cacheManager" ref="springCacheManager"/>
+    </bean>
+
+    <!-- 凭证匹配器，做登录次数验证，和密码匹配验证 -->
+    <bean id="credentialsMatcher" class="cn.craz.shiro.matcher.RetryLimitHashedCredentialsMatcher">
+        <constructor-arg ref="cacheManager"/>
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="2"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
+
+    <!--自定义realm-->
+    <bean id="userRealm" class="cn.craz.shiro.realm.UserRealm">
+        <property name="cachingEnabled" value="false"/>
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <bean id="myFormAuthenticationFilter" class="cn.craz.shiro.filter.MyFormAuthenticationFilter"/>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"/>
+
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/doLogin"/>
+        <property name="successUrl" value="/loginSuccess"/>
+        <property name="filters">
+            <util:map>
+                <entry key="authc" value-ref="myFormAuthenticationFilter"/>
+                <entry key="logout" value-ref="systemLogoutFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+           /login=anon
+            /doLogin=authc
+                /logout=logout
+                /**=authc
+            </value>
+        </property>
+    </bean>
+    <import resource="spring-config-cache.xml"/>
+</beans>

@@ -13,4 +13,9 @@ public class UserServiceImpl implements UserService {
 	public SysUser findByUsername(String username) {
 		return userMapper.findByUsername(username);
 	}
+
+	@Override
+	public void signUp(SysUser user) {
+		userMapper.insert(user);
+	}
 }

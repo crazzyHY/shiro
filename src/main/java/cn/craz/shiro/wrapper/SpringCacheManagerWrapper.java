@@ -31,6 +31,7 @@ public class SpringCacheManagerWrapper implements CacheManager {
 	}
 
 	static class SpringCacheWrapper implements Cache{
+
 		private org.springframework.cache.Cache springCache;
 
 		public SpringCacheWrapper(org.springframework.cache.Cache springCache) {

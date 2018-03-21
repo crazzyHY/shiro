@@ -8,42 +8,58 @@
     </bean>
 
     <!-- 凭证匹配器，做登录次数验证，和密码匹配验证 -->
-    <bean id="credentialsMatcher" class="cn.craz.shiro.matcher.RetryLimitHashedCredentialsMatcher">
+    <bean id="credentialsMatcher" class="cn.craz.shiro.credentials.RetryLimitHashedCredentialsMatcher">
         <constructor-arg ref="cacheManager"/>
         <property name="hashAlgorithmName" value="md5"/>
         <property name="hashIterations" value="2"/>
         <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
-
+    <!-- 基于Form表单的身份验证过滤器，为了控制验证码 -->
+    <bean id="authcFilter" class="cn.craz.shiro.filter.RcFormAuthenticationFilter">
+        <property name="usernameParam" value="username"/>
+        <property name="passwordParam" value="password"/>
+        <property name="rememberMeParam" value="rememberMe"/>
+        <property name="loginUrl" value="/doLogin"/>
+        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
+    </bean>
     <!--自定义realm-->
     <bean id="userRealm" class="cn.craz.shiro.realm.UserRealm">
         <property name="cachingEnabled" value="false"/>
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
     </bean>
-
-    <bean id="myFormAuthenticationFilter" class="cn.craz.shiro.filter.MyFormAuthenticationFilter"/>
+    <!-- 验证码验证过滤器 -->
+    <bean id="rcCaptchaValidateFilter" class="cn.craz.shiro.filter.RcCaptchaValidateFilter">
+        <property name="captchaEnabled" value="true"/>
+        <property name="captchaParam" value="captchaCode"/>
+        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
+    </bean>
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"/>
 
     </bean>
+    <!--管理shirobean的生命周期-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->
+    <!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/doLogin"/>
+        <property name="loginUrl" value="/login"/>
         <property name="successUrl" value="/loginSuccess"/>
         <property name="filters">
             <util:map>
-                <entry key="authc" value-ref="myFormAuthenticationFilter"/>
+                <entry key="authc" value-ref="authcFilter"/>
                 <entry key="logout" value-ref="systemLogoutFilter"/>
+                <entry key="rcCaptchaValidate" value-ref="rcCaptchaValidateFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
             <value>
-           /login=anon
-            /doLogin=authc
-                /logout=logout
-                /**=authc
+                /login=anon
+                /rcCaptcha* = anon
+                /doLogin = rcCaptchaValidate,authc
+                /logout = logout
+                /** = authc
             </value>
         </property>
     </bean>

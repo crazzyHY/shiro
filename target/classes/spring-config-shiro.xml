@@ -19,7 +19,7 @@
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
         <property name="rememberMeParam" value="rememberMe"/>
-        <property name="loginUrl" value="/doLogin"/>
+        <property name="loginUrl" value="/login"/>
         <property name="failureKeyAttribute" value="shiroLoginFailure"/>
     </bean>
     <!--自定义realm-->
@@ -55,9 +55,8 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /login=anon
                 /rcCaptcha* = anon
-                /doLogin = rcCaptchaValidate,authc
+                /login = rcCaptchaValidate,authc
                 /logout = logout
                 /** = authc
             </value>

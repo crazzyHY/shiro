@@ -23,11 +23,7 @@ public class test {
 
 	@Autowired
 	UserService userService;
-	@RequestMapping("/login")
-	public String toUser() {
 
-		return "login";
-	}
 
 	@RequestMapping("/loginSuccess")
 	public String loginSuccess() {
@@ -40,7 +36,7 @@ public class test {
 		return "index";
 	}
 
-	@RequestMapping("/doLogin")
+	@RequestMapping("/login")
 	public String doLogin(HttpServletRequest request, Model model) {
 		if (SecurityUtils.getSubject().isAuthenticated()) {
 			return "index";

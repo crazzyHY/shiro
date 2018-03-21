@@ -16,7 +16,7 @@
 </head>
 <body>
 <h2>login</h2>
-<form action="/doLogin" method="post">
+<form action="/login" method="post">
     用户名：<input id="username" type="text" name="username"><br/>
     密码：<input id="password" type="password" name="password"><br/>
     自动登录：<input type="checkbox" name="rememberMe" value="true"><br/>

@@ -33,7 +33,9 @@ public class RcCaptchaValidateFilter extends AccessControlFilter {
 		HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
 
 		//2 判断验证码是否禁用或不是表单提交
-		if (!captchaEnabled ) {//|| "post".equalsIgnoreCase(httpServletRequest.getMethod())
+		System.out.println("~~~~~~~~~~~~~~~~~");
+		System.out.println(httpServletRequest.getMethod());
+		if (!captchaEnabled||! "post".equalsIgnoreCase(httpServletRequest.getMethod()) ) {//
 			return true;
 		}
 		//3 此时是表单提交 验证验证码是否正确 获取页面验证码

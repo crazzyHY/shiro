@@ -12,5 +12,6 @@
 </head>
 <body>
 <h2>refuse</h2>
+你没有权限访问当前页面
 </body>
 </html>

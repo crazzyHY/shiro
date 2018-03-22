@@ -2,6 +2,7 @@ package cn.craz.shiro.credentials;
 
 import cn.craz.shiro.entity.SysUser;
 import cn.craz.shiro.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -39,6 +40,8 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 			passwordRetryCache.put(username, retryCount);
 		}
 		//超过5次就报错
+
+
 		if (retryCount.incrementAndGet() > 5) {
 			throw new ExcessiveAttemptsException();
 		}
@@ -50,6 +53,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 
 			Subject subject = SecurityUtils.getSubject();
 			Session session = subject.getSession();
+			//匹配后存入session用于后面权限获取
 			session.setAttribute("SysUser", user);
 		}
 

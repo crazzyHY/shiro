@@ -12,7 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-@Slf4j
+
 @Setter
 public class RcCaptchaValidateFilter extends AccessControlFilter {
 	//是否开启验证码支持
@@ -33,15 +33,14 @@ public class RcCaptchaValidateFilter extends AccessControlFilter {
 		HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
 
 		//2 判断验证码是否禁用或不是表单提交
-		System.out.println("~~~~~~~~~~~~~~~~~");
-		System.out.println(httpServletRequest.getMethod());
+
 		if (!captchaEnabled||! "post".equalsIgnoreCase(httpServletRequest.getMethod()) ) {//
 			return true;
 		}
 		//3 此时是表单提交 验证验证码是否正确 获取页面验证码
 		String submitCaptcha = httpServletRequest.getParameter(captchaParam);
 		//获取session中的验证码
-		log.info(httpServletRequest.getSession().getAttribute("rcCaptcha").toString());
+
 		String captcha = (String) httpServletRequest.getSession().getAttribute("rcCaptcha");
 		//如果提交的验证码等于session中的 验证码
 

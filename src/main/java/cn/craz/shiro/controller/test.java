@@ -77,4 +77,10 @@ public class test {
 	public String list(){
 		return "list";
 	}
+
+	@RequiresPermissions(("list:edit"))
+	@RequestMapping("/edit")
+	public String edit(){
+		return "edit";
+	}
 }

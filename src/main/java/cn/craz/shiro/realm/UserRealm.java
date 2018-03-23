@@ -43,21 +43,24 @@ public class UserRealm extends AuthorizingRealm {
 		return token instanceof UsernamePasswordToken;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		//获取当前用户username
 		String username = (String) principalCollection.getPrimaryPrincipal();
+		//授权信息
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		//通过subject获取session
 		Subject subject = SecurityUtils.getSubject();
 		Session session = subject.getSession();
+		//从session中获取信息
 		SysUser user = (SysUser) session.getAttribute("SysUser");
 		if (user == null) {
 			user = userService.findByUsername(username);
 			session.setAttribute("SysUser", user);
 		}
-		Long userId = user.getId();
 		Set<String> roles = (Set<String>) session.getAttribute("Roles");
 		if (roles==null||roles.isEmpty()) {
-			roles = roleService.getAllRolesByUserId(userId);
+			roles = roleService.getAllRolesByUsername(username);
 			session.setAttribute("Roles", roles);
 		}
 		authorizationInfo.setRoles(roles);

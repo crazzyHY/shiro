@@ -11,6 +11,14 @@
   <sql id="Base_Column_List" >
     id, role, description, permission_ids, available
   </sql>
+  <select id="getRolesByRoleId" parameterType="java.util.List" resultType="java.lang.String">
+    SELECT role
+    FROM sys_role
+    WHERE id IN
+    <foreach collection="list" index="index" item="item" separator="," close=")" open="(">
+      #{item}
+    </foreach>
+  </select>
   <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />

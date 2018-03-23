@@ -19,4 +19,8 @@ public interface SysRoleMapper {
     SysRole getById(Long id);
 
     List<String> getPermissionsIdByRoleIdList(List rolesId);
+
+    List<String> getRolesByRoleId(List rolesId);
+
+
 }

@@ -3,6 +3,7 @@ package cn.craz.shiro.dao;
 import cn.craz.shiro.entity.SysRole;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SysRoleMapper {
     int insert(SysRole record);
@@ -16,4 +17,6 @@ public interface SysRoleMapper {
     int updateByPrimaryKey(SysRole record);
 
     SysRole getById(Long id);
+
+    List<String> getPermissionsIdByRoleIdList(List rolesId);
 }

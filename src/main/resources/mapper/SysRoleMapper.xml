@@ -5,17 +5,25 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="role" property="role" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="resource_ids" property="resourceIds" jdbcType="VARCHAR" />
+    <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" />
     <result column="available" property="available" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, role, description, resource_ids, available
+    id, role, description, permission_ids, available
   </sql>
   <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM sys_role
     WHERE id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getPermissionsIdByRoleIdList" resultType="java.lang.String" parameterType="java.util.List">
+    SELECT DISTINCT permission_ids
+    FROM  sys_role
+    WHERE id IN 
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -27,9 +35,9 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sys_role (role, description, resource_ids, 
+    insert into sys_role (role, description, permission_ids,
       available)
-    values (#{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{resourceIds,jdbcType=VARCHAR}, 
+    values (#{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{permissionIds,jdbcType=VARCHAR},
       #{available,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="cn.craz.shiro.entity.SysRole" >
@@ -44,8 +52,8 @@
       <if test="description != null" >
         description,
       </if>
-      <if test="resourceIds != null" >
-        resource_ids,
+      <if test="permissionIds != null" >
+        permission_ids,
       </if>
       <if test="available != null" >
         available,
@@ -58,8 +66,8 @@
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="resourceIds != null" >
-        #{resourceIds,jdbcType=VARCHAR},
+      <if test="permissionIds != null" >
+        #{permissionIds,jdbcType=VARCHAR},
       </if>
       <if test="available != null" >
         #{available,jdbcType=BIT},
@@ -75,8 +83,8 @@
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
-      <if test="resourceIds != null" >
-        resource_ids = #{resourceIds,jdbcType=VARCHAR},
+      <if test="permissionIds != null" >
+        permission_ids = #{permissionIds,jdbcType=VARCHAR},
       </if>
       <if test="available != null" >
         available = #{available,jdbcType=BIT},
@@ -88,7 +96,7 @@
     update sys_role
     set role = #{role,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
-      resource_ids = #{resourceIds,jdbcType=VARCHAR},
+      permission_ids = #{permissionIds,jdbcType=VARCHAR},
       available = #{available,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>

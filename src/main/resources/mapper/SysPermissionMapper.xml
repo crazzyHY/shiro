@@ -14,6 +14,14 @@
   <sql id="Base_Column_List" >
     id, name, type, url, parent_id, parent_ids, permission, available
   </sql>
+  <select id="getPermissionsById" resultType="java.lang.String" parameterType="java.util.Set">
+    SELECT permission
+    FROM sys_permission
+    WHERE id IN
+    <foreach collection="set" index="index" open="(" close=")" separator="," item="item">
+      #{item}
+    </foreach>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

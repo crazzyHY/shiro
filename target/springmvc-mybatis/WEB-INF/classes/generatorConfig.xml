@@ -17,7 +17,7 @@
         <!--password="${jdbc.password}">-->
         <!--</jdbcConnection>-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/shiro2?characterEncoding=UTF-8"
+                        connectionURL="jdbc:mysql://localhost:3306/shiro_test?characterEncoding=UTF-8"
                         userId="root"
                         password="qwert123">
         </jdbcConnection>
@@ -52,7 +52,7 @@
         <!-- 指定数据库表 -->
 
 
-        <table tableName="sys_user"    enableDeleteByPrimaryKey="false" enableCountByExample="false"
+        <table tableName="sys_permission"    enableDeleteByPrimaryKey="false" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

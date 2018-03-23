@@ -3,6 +3,7 @@ package cn.craz.shiro.realm;
 import cn.craz.shiro.dao.SysRoleMapper;
 import cn.craz.shiro.dao.SysUserMapper;
 import cn.craz.shiro.entity.SysUser;
+import cn.craz.shiro.service.PermissionService;
 import cn.craz.shiro.service.RoleService;
 import cn.craz.shiro.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ public class UserRealm extends AuthorizingRealm {
 
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private PermissionService permissionService;
 
 	@Override
 	public String getName() {
@@ -41,6 +44,7 @@ public class UserRealm extends AuthorizingRealm {
 	}
 
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+		//获取当前用户username
 		String username = (String) principalCollection.getPrimaryPrincipal();
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		Subject subject = SecurityUtils.getSubject();
@@ -52,17 +56,19 @@ public class UserRealm extends AuthorizingRealm {
 		}
 		Long userId = user.getId();
 		Set<String> roles = (Set<String>) session.getAttribute("Roles");
-		if (roles.isEmpty() ) {
+		if (roles==null||roles.isEmpty()) {
 			roles = roleService.getAllRolesByUserId(userId);
 			session.setAttribute("Roles", roles);
 		}
 		authorizationInfo.setRoles(roles);
 
 		Set<String> permissions = (Set<String>) session.getAttribute("Permissions");
-		if (permissions.isEmpty()) {
-			permissions =
+		if (permissions==null||permissions.isEmpty()) {
+			permissions = permissionService.getPermissionsByUsername(username);
+			session.setAttribute("Permissions", permissions);
 		}
-		return null;
+		authorizationInfo.setStringPermissions(permissions);
+		return authorizationInfo;
 	}
 
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {

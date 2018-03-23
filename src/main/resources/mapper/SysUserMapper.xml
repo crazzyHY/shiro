@@ -13,6 +13,11 @@
   <sql id="Base_Column_List" >
     id, organization_id, username, password, salt, role_ids, locked
   </sql>
+  <select id="getRolesIdByUsername" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT role_ids
+    FROM sys_user
+    WHERE username=#{username,jdbcType=VARCHAR}
+  </select>
   <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT
     <include refid="Base_Column_List" />

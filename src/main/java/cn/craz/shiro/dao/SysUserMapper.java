@@ -14,4 +14,6 @@ public interface SysUserMapper {
     int updateByPrimaryKey(SysUser record);
 
     SysUser findByUsername(String username);
+
+    String getRolesIdByUsername(String username);
 }

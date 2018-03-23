@@ -10,7 +10,7 @@ public class SysRole {
 
     private String description;
 
-    private String resourceIds;
+    private String permissionIds;
 
     private Boolean available;
 

@@ -46,6 +46,7 @@ public class UserRealm extends AuthorizingRealm {
 	@SuppressWarnings("unchecked")
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		//获取当前用户username
+
 		String username = (String) principalCollection.getPrimaryPrincipal();
 		//授权信息
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -66,7 +67,7 @@ public class UserRealm extends AuthorizingRealm {
 		authorizationInfo.setRoles(roles);
 
 		Set<String> permissions = (Set<String>) session.getAttribute("Permissions");
-		if (permissions==null||permissions.isEmpty()) {
+  		if (permissions==null||permissions.isEmpty()) {
 			permissions = permissionService.getPermissionsByUsername(username);
 			session.setAttribute("Permissions", permissions);
 		}

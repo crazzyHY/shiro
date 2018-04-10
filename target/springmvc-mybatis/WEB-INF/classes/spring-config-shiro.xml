@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="cacheManager" class="cn.craz.shiro.wrapper.SpringCacheManagerWrapper">
-        <property name="cacheManager" ref="springCacheManager"/>
+    <bean id="cacheManager" class="cn.craz.shiro.cache.CustomCacheManager">
+        <!--<property name="cacheManager" ref="springCacheManager"/>-->
     </bean>
 
     <!-- 凭证匹配器，做登录次数验证，和密码匹配验证 -->
@@ -24,8 +24,12 @@
     </bean>
     <!--自定义realm-->
     <bean id="userRealm" class="cn.craz.shiro.realm.UserRealm">
-        <property name="cachingEnabled" value="false"/>
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <!--<property name="cachingEnabled" value="false"/>-->
+        <!---->
+        <property name="authenticationCacheName" value="authentication"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorization"/>
     </bean>
     <!-- 验证码验证过滤器 -->
     <bean id="rcCaptchaValidateFilter" class="cn.craz.shiro.filter.RcCaptchaValidateFilter">
@@ -36,6 +40,8 @@
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"/>
+        <!--！！！！！-->
+        <property name="cacheManager" ref="cacheManager"/>
 
     </bean>
     <!--管理shirobean的生命周期-->

@@ -72,6 +72,8 @@ public class test {
 		userService.signUp(user);
 		return "redirect:/login";
 	}
+
+
 	@RequiresPermissions("list:view")
 	@RequestMapping("/list")
 	public String list(){

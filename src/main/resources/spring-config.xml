@@ -9,8 +9,9 @@
 
 
 <context:component-scan base-package="cn.craz.shiro"/>
+    <context:property-placeholder location="classpath:redis.properties,classpath*:jdbc.properties" />
 
-
+    <!--<import resource="spring-config-redis.xml"/>-->
     <import resource="spring-config-shiro.xml"/>
     <import resource="spring-config-mybatis.xml"/>
 </beans>

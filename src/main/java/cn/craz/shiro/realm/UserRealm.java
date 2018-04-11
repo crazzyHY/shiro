@@ -1,5 +1,6 @@
 package cn.craz.shiro.realm;
 
+import cn.craz.shiro.cache.serializer.MySimpleByteSource;
 import cn.craz.shiro.dao.SysRoleMapper;
 import cn.craz.shiro.dao.SysUserMapper;
 import cn.craz.shiro.entity.SysUser;
@@ -87,7 +88,7 @@ public class UserRealm extends AuthorizingRealm {
 		//需要使用credentialsMatcher来进行密码匹配
 
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getUsername()
-				, user.getPassword(), ByteSource.Util.bytes(user.getCredentialsSalt()), getName());
+				, user.getPassword(), new MySimpleByteSource(user.getCredentialsSalt().getBytes()), getName());
 
 		return simpleAuthenticationInfo;
 	}

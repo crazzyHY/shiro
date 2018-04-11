@@ -1,37 +1,77 @@
 package cn.craz.shiro.cache;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.cache.CacheManager;
-import redis.clients.jedis.Jedis;
 
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.shiro.cache.Cache;
+import cn.craz.shiro.cache.serializer.ByteSourceUtils;
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.Cache;
 import org.apache.shiro.cache.CacheException;
-import redis.clients.jedis.Jedis;
+import org.apache.commons.lang3.SerializationUtils;
+import org.springframework.data.redis.connection.jedis.JedisUtils;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
-import cn.craz.shiro.cache.JedisUtils;
-
 @Slf4j
-public class ShiroRedisCache<K, V> implements Cache<K, V> {
-	// shiro cache  key = value
-	// redis key = value
 
 
+public class ShiroRedisCache<K, V> implements org.apache.shiro.cache.Cache<K, V> {
+
+	private CacheManager cacheManager;
+	private Cache cache;
+
+	private byte[] getByteKey(Object key){
+		if(key instanceof String){
+			String preKey = (String) key;
+			return preKey.getBytes();
+		}else{
+			return ByteSourceUtils.serialize((Serializable) key);
+		}
+	}
+
+	public ShiroRedisCache(String name, CacheManager cacheManager) {
+		if (name == null || cacheManager == null) {
+			throw new CacheException("cacheManager or CacheName cannot be null");
+		}
+		this.cacheManager = cacheManager;
+		this.cache = cacheManager.getCache(name);
+	}
 
 	public Object get(Object key) throws CacheException {
 
-		byte[] bs = SerializationUtils.serialize((Serializable) key);
 
-		byte[] value = JedisUtils.getJedis().get(bs);
+//		byte[] bs = SerializationUtils.serialize((Serializable) key);
+//
+//		Cache.ValueWrapper valueWrapper = cache.get(bs);
+//
+//		if (valueWrapper == null) {
+//			return null;
+//		}
+//		return SerializationUtils.deserialize((byte[]) valueWrapper.get());
 
-		if (value == null) {
+
+
+		String ketString = JSON.toJSONString(key);
+		log.info("从缓存中获取key为{}的信息", ketString);
+		if (ketString == null) {
 			return null;
 		}
-		return SerializationUtils.deserialize(value);
+
+		Cache.ValueWrapper valueWrapper = cache.get(ketString);
+		if (valueWrapper == null) {
+			return null;
+		}
+		log.info("信息为：" + valueWrapper.get());
+		if (key instanceof SimplePrincipalCollection) {
+			return JSON.parseObject((String) valueWrapper.get(),SimpleAuthorizationInfo.class);
+		}
+		return  valueWrapper.get();
+
+
 	}
 
 	/**
@@ -39,46 +79,54 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	 */
 	public Object put(Object key, Object value) throws CacheException {
 
-		Jedis jedis = JedisUtils.getJedis();
 
-		//序列化   和  反序列化
-		String oo = jedis.set(SerializationUtils.serialize((Serializable) key), SerializationUtils.serialize((Serializable) value));
-		log.info("保存到redis中:key=" + key + " value=" + value);
-		log.info(oo);
-		byte[] bs = jedis.get(SerializationUtils.serialize((Serializable) key));
 
-		Object object = SerializationUtils.deserialize(bs);
-		System.out.println(object);
-		return object;
+//		 cache.put(SerializationUtils.serialize((Serializable) key), SerializationUtils.serialize((Serializable) value));
+//		log.info("保存到redis中:key=" + key + " value=" + value);
+//
+//		Cache.ValueWrapper wrapper = cache.get(SerializationUtils.serialize((Serializable) key));
+//
+//		Object object = SerializationUtils.deserialize((byte[]) wrapper.get());
+//		System.out.println(object);
+//		return object;
+
+
+
+//		String stringKey = key.toString();
+//		log.info("创建新的缓存，信息为：{}={}", key, value);
+//		cache.put(stringKey,keyserializer);
+//		Cache.ValueWrapper valueWrapper = cache.get(stringKey);
+//		Object object = ByteSourceUtils.deserialize((byte[]) valueWrapper.get());
+//		return (V) object;
+
+		String keyString = JSON.toJSONString(key);
+		String valueJson = JSON.toJSONString(value);
+
+		log.info("创建新的缓存，信息为：{}={}", keyString, valueJson);
+		cache.put(keyString, valueJson);
+		return value;
+
+//		log.info("存入key:" + keyString + " value:" + valueJson);
+//		cache.put(keyString,valueJson);
+//		return get(keyString);
+
 	}
 
 
 	public Object remove(Object key) throws CacheException {
-
-		Jedis jedis = JedisUtils.getJedis();
-
-		byte[] bs = jedis.get(SerializationUtils.serialize((Serializable) key));
-
-		jedis.del(SerializationUtils.serialize((Serializable) key));
-
-		return SerializationUtils.deserialize(bs);
+//		log.info("删除缓存key为{}的内容", JSON.toJSONString(key));
+//		Object o = (String) get(key);
+//		cache.evict(JSON.toJSONString(key));
+//		return (V) o;
+		return null;
 	}
 
-	public static void main(String[] args) {
-		String key = "admin";
-		Jedis jedis = JedisUtils.getJedis();
 
-		byte[] bs = jedis.get(SerializationUtils.serialize((Serializable) key));
-		System.out.println(bs);
-//		Cache cache = new ShiroRedisCache();
-//		Object o = cache.remove("lll");
-//		System.out.println(o.toString());
-	}
 	/**
 	 * 清空所有缓存
 	 */
 	public void clear() throws CacheException {
-		JedisUtils.getJedis().flushDB();
+			cache.clear();
 	}
 
 	/**
@@ -86,9 +134,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	 */
 	public int size() {
 
-		Long size = JedisUtils.getJedis().dbSize();
-
-		return size.intValue();
+		return 1;
 	}
 
 	/**
@@ -96,14 +142,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	 */
 	public Set keys() {
 
-		Set<byte[]> keys = JedisUtils.getJedis().keys(new String("*").getBytes());
-
-		Set<Object> set = new HashSet<Object>();
-
-		for (byte[] bs : keys) {
-			set.add(SerializationUtils.deserialize(bs));
-		}
-		return set;
+		return null;
 	}
 
 	/**
@@ -111,14 +150,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	 */
 	public Collection values() {
 
-		Set keys = this.keys();
-
-		List<Object> values = new ArrayList<Object>();
-
-		for (Object object : keys) {
-			byte[] bs = JedisUtils.getJedis().get(SerializationUtils.serialize((Serializable) object));
-			values.add(SerializationUtils.deserialize(bs));
-		}
-		return values;
+		return null;
 	}
+
 }

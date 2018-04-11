@@ -37,6 +37,9 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.16" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.16" />
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.1.26" />
+          <element id="library" level="project" name="Maven: com.esotericsoftware.kryo:kryo:2.24.0" />
+          <element id="library" level="project" name="Maven: com.esotericsoftware.minlog:minlog:1.2" />
+          <element id="library" level="project" name="Maven: org.objenesis:objenesis:2.1" />
           <element id="library" level="project" name="Maven: commons-attributes:commons-attributes-api:2.1" />
           <element id="library" level="project" name="Maven: qdox:qdox:1.5" />
           <element id="library" level="project" name="Maven: commons-attributes:commons-attributes-compiler:2.1" />
@@ -83,6 +86,7 @@
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-ehcache:1.2.2" />
           <element id="library" level="project" name="Maven: redis.clients:jedis:2.8.0" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.3" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:1.6.0.RELEASE" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.7.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.4" />

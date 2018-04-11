@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="cacheManager" class="cn.craz.shiro.cache.CustomCacheManager">
-        <!--<property name="cacheManager" ref="springCacheManager"/>-->
+    <bean id="cacheManager" class="cn.craz.shiro.cache.ShiroSpringCacheManager">
+        <property name="cacheManager" ref="redisCacheManager"/>
     </bean>
 
     <!-- 凭证匹配器，做登录次数验证，和密码匹配验证 -->
@@ -27,6 +27,9 @@
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <!--<property name="cachingEnabled" value="false"/>-->
         <!---->
+        <property name="cacheManager" ref="cacheManager"/>
+
+        <property name="authenticationCachingEnabled" value="true"/>
         <property name="authenticationCacheName" value="authentication"/>
         <property name="authorizationCachingEnabled" value="true"/>
         <property name="authorizationCacheName" value="authorization"/>
@@ -68,5 +71,6 @@
             </value>
         </property>
     </bean>
-    <import resource="spring-config-cache.xml"/>
+        <import resource="spring-config-redis.xml"/>
+
 </beans>

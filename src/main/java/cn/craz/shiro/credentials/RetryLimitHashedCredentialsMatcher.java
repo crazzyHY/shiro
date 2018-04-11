@@ -2,6 +2,7 @@ package cn.craz.shiro.credentials;
 
 import cn.craz.shiro.entity.SysUser;
 import cn.craz.shiro.service.UserService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -32,8 +33,8 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
 		String username = (String) token.getPrincipal();
-
-		AtomicInteger retryCount = passwordRetryCache.get(username);
+		Object o =passwordRetryCache.get(username);
+		AtomicInteger retryCount = (AtomicInteger) JSONObject.parseObject((String) o).get("retryCount");
 
 		if (null == retryCount) {
 			retryCount = new AtomicInteger(0);

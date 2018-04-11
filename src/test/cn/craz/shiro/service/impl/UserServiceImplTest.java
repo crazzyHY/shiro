@@ -4,6 +4,7 @@ import cn.craz.shiro.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -13,13 +14,16 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(value = "classpath:spring-config.xml")
-@WebAppConfiguration
+//@WebAppConfiguration
 public class UserServiceImplTest {
 
 	@Autowired
-	UserService userService;
+	RedisTemplate redisTemplate;
 	@Test
 	public void findByUsername() {
-		System.out.println(userService.findByUsername("admin"));
+		String key = "lll";
+		String value = "ooo";
+		redisTemplate.opsForValue().set(key, value);
+		System.out.println(redisTemplate.opsForValue().get(key));
 	}
 }

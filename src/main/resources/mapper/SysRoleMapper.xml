@@ -1,111 +1,111 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.craz.shiro.dao.SysRoleMapper" >
-  <resultMap id="BaseResultMap" type="cn.craz.shiro.entity.SysRole" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="role" property="role" jdbcType="VARCHAR" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" />
-    <result column="available" property="available" jdbcType="BIT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, role, description, permission_ids, available
-  </sql>
-  <select id="getRolesByRoleId" parameterType="java.util.List" resultType="java.lang.String">
-    SELECT role
-    FROM sys_role
-    WHERE id IN
-    <foreach collection="list" index="index" item="item" separator="," close=")" open="(">
-      #{item}
-    </foreach>
-  </select>
-  <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List" />
-    FROM sys_role
-    WHERE id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="getPermissionsIdByRoleIdList" resultType="java.lang.String" parameterType="java.util.List">
-    SELECT DISTINCT permission_ids
-    FROM  sys_role
-    WHERE id IN 
-    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_role
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <insert id="insert" parameterType="cn.craz.shiro.entity.SysRole" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into sys_role (role, description, permission_ids,
-      available)
-    values (#{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{permissionIds,jdbcType=VARCHAR},
-      #{available,jdbcType=BIT})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.craz.shiro.entity.SysRole" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into sys_role
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="role != null" >
-        role,
-      </if>
-      <if test="description != null" >
-        description,
-      </if>
-      <if test="permissionIds != null" >
-        permission_ids,
-      </if>
-      <if test="available != null" >
-        available,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="role != null" >
-        #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="permissionIds != null" >
-        #{permissionIds,jdbcType=VARCHAR},
-      </if>
-      <if test="available != null" >
-        #{available,jdbcType=BIT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.craz.shiro.entity.SysRole" >
-    update sys_role
-    <set >
-      <if test="role != null" >
-        role = #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
+<mapper namespace="cn.craz.shiro.dao.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="cn.craz.shiro.entity.SysRole">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR"/>
+        <result column="available" property="available" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, role, description, permission_ids, available
+    </sql>
+    <select id="getRolesByRoleId" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT role
+        FROM sys_role
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" separator="," close=")" open="(">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_role
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getPermissionsIdByRoleIdList" resultType="java.lang.String" parameterType="java.util.List">
+        SELECT DISTINCT permission_ids
+        FROM sys_role
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="cn.craz.shiro.entity.SysRole">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_role (role, description, permission_ids,
+        available)
+        values (#{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{permissionIds,jdbcType=VARCHAR},
+        #{available,jdbcType=BIT})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.craz.shiro.entity.SysRole">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="role != null">
+                role,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="permissionIds != null">
+                permission_ids,
+            </if>
+            <if test="available != null">
+                available,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="role != null">
+                #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionIds != null">
+                #{permissionIds,jdbcType=VARCHAR},
+            </if>
+            <if test="available != null">
+                #{available,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.craz.shiro.entity.SysRole">
+        update sys_role
+        <set>
+            <if test="role != null">
+                role = #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionIds != null">
+                permission_ids = #{permissionIds,jdbcType=VARCHAR},
+            </if>
+            <if test="available != null">
+                available = #{available,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.craz.shiro.entity.SysRole">
+        update sys_role
+        set role = #{role,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="permissionIds != null" >
         permission_ids = #{permissionIds,jdbcType=VARCHAR},
-      </if>
-      <if test="available != null" >
-        available = #{available,jdbcType=BIT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.craz.shiro.entity.SysRole" >
-    update sys_role
-    set role = #{role,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      permission_ids = #{permissionIds,jdbcType=VARCHAR},
-      available = #{available,jdbcType=BIT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        available = #{available,jdbcType=BIT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

@@ -52,44 +52,44 @@
         <!-- 指定数据库表 -->
 
 
-        <table tableName="sys_permission"    enableDeleteByPrimaryKey="false" enableCountByExample="false"
+        <table tableName="sys_permission" enableDeleteByPrimaryKey="false" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table schema="" tableName="%"-->
-               <!--enableCountByExample="false"-->
-               <!--enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false"-->
-               <!--enableUpdateByExample="false">-->
-            <!--&lt;!&ndash;<columnRenamingRule searchString="^[^_]+" replaceString=""/>&ndash;&gt;-->
+        <!--enableCountByExample="false"-->
+        <!--enableDeleteByExample="false"-->
+        <!--enableSelectByExample="false"-->
+        <!--enableUpdateByExample="false">-->
+        <!--&lt;!&ndash;<columnRenamingRule searchString="^[^_]+" replaceString=""/>&ndash;&gt;-->
         <!--</table>-->
 
         <!--<table tableName="order_detail" domainObjectName="OrderDetail"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
         <!--</table>-->
 
         <!--<table tableName="order_master" domainObjectName="OrderMaster"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
         <!--</table>-->
         <!--<table tableName="product_category" domainObjectName="ProductCategory"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
         <!--</table>-->
         <!--<table tableName="product_info" domainObjectName="ProductInfo"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
         <!--</table>-->
         <!--<table tableName="seller_info" domainObjectName="SellerInfo"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false">-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
         <!--</table>-->
         <!-- 有些表的字段需要指定java类型
          <table schema="" tableName="">

@@ -21,22 +21,22 @@
     密码：<input id="password" type="password" name="password"><br/>
     自动登录：<input type="checkbox" name="rememberMe" value="true"><br/>
     <%--<c:if test="${!captchaEbabled}">--%>
-        <div class="login_code">
-            <ul>
-                <li>
-                    <label>验证码：</label>
-                </li>
-                <li class="input_code">
-                    <input id="code" name="captchaCode" size="6"/>
-                </li>
+    <div class="login_code">
+        <ul>
+            <li>
+                <label>验证码：</label>
+            </li>
+            <li class="input_code">
+                <input id="code" name="captchaCode" size="6"/>
+            </li>
 
-                <li>
+            <li>
                     <span> <img class="rcCaptcha-btn rcCaptcha-img" src="${baseURL}/rcCaptcha.jpg"
                                 alt="点击更换验证码" title="点击更换验证码" width="65" height="24"/>
                     </span>
-                </li>
-            </ul>
-        </div>
+            </li>
+        </ul>
+    </div>
     <%--</c:if>--%>
     <input type="submit" value="登录">
 

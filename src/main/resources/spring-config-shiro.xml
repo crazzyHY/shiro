@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="cacheManager" class="cn.craz.shiro.cache.CustomCacheManager">
@@ -38,12 +39,31 @@
         <property name="failureKeyAttribute" value="shiroLoginFailure"/>
     </bean>
 
-    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="userRealm"/>
-        <!--！！！！！-->
-        <property name="cacheManager" ref="cacheManager"/>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"
+          p:realm-ref="userRealm" p:cacheManager-ref="cacheManager"
+          p:sessionManager-ref="sessionManager"/>
 
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager"
+          p:globalSessionTimeout="1800000" p:deleteInvalidSessions="false"
+          p:sessionValidationSchedulerEnabled="false" p:sessionValidationInterval="1800000"
+          p:sessionFactory-ref="sessionFactory" p:sessionDAO-ref="cachingShiroSessionDao">
+        <property name="sessionIdCookie">
+            <bean class="org.apache.shiro.web.servlet.SimpleCookie" c:name="SHRIOSESSIONID"/>
+        </property>
+        <!--<property name="sessionListeners">-->
+        <!--<list>-->
+        <!--<ref bean="sessionListener"/>-->
+        <!--</list>-->
+        <!--</property>-->
     </bean>
+
+    <bean id="cachingShiroSessionDao" class="cn.craz.shiro.session.CustomShiroSessionDao"
+          p:shiroSessionDao-ref="ShiroSessionDaoImpl"/>
+
+    <bean id="ShiroSessionDaoImpl" class="cn.craz.shiro.session.impl.ShiroSessionDaoImpl"
+          p:redisTemplate-ref="redisTemplate"/>
+    <bean id="sessionFactory" class="cn.craz.shiro.session.ShiroSessionFactory"/>
+
     <!--管理shirobean的生命周期-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
     <!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->
@@ -68,5 +88,5 @@
             </value>
         </property>
     </bean>
-    <import resource="spring-config-cache.xml"/>
+    <import resource="spring-config-redis.xml"/>
 </beans>

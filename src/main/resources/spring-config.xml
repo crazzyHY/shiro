@@ -8,9 +8,9 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-<context:component-scan base-package="cn.craz.shiro"/>
+    <context:component-scan base-package="cn.craz.shiro"/>
 
-
+    <context:property-placeholder location="classpath:redis.properties,classpath:jdbc.properties"/>
     <import resource="spring-config-shiro.xml"/>
     <import resource="spring-config-mybatis.xml"/>
 </beans>

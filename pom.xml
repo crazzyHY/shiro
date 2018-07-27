@@ -26,6 +26,13 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.6.0.RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-juli</artifactId>
@@ -70,34 +77,34 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>5.0.2.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>5.0.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>5.0.2.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>5.0.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>5.0.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>5.0.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -279,18 +286,18 @@
 
         <!--&lt;!&ndash;-->
 
-            <dependency>
+        <dependency>
             <artifactId>ehcache-core</artifactId>
             <groupId>net.sf.ehcache</groupId>
             <version>2.5.0</version>
-            </dependency>
-            <dependency>
+        </dependency>
+        <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-ehcache</artifactId>
             <version>1.2.2</version>
-            </dependency>
+        </dependency>
 
-         <!--shiro end-->
+        <!--shiro end-->
 
 
         <!-- redis begin -->

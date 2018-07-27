@@ -6,6 +6,8 @@ import cn.craz.shiro.dao.SysUserMapper;
 import cn.craz.shiro.entity.SysUser;
 import cn.craz.shiro.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
